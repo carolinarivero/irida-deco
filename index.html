@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Irida Deco · Tienda</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Pinyon+Script&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#eadbc8;--surface:#f5ecdf;--ink:#4e342e;--muted:#7a6358;--accent:#3e5a47;--accent-ink:#f5ecdf;--line:#d2c0a8;--smoke:#7f9886;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1e1a;--surface:#37291f;--ink:#eadbc8;--muted:#b8a593;--accent:#8fb09a;--accent-ink:#2a1e1a;--line:#4b3b31;--smoke:#6f8a78;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2a1e1a;--surface:#37291f;--ink:#eadbc8;--muted:#b8a593;--accent:#8fb09a;--accent-ink:#2a1e1a;--line:#4b3b31;--smoke:#6f8a78;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "Instrument Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Gloock",Georgia,serif;font-weight:400;line-height:1.05;margin:0}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{font:400 24px "Gloock",Georgia,serif}.deco{font-family:"Pinyon Script",cursive;font-size:1.35em}
+.cartbtn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:9px 16px;font-weight:600}
+.hero{position:relative;overflow:hidden;padding:56px 20px 24px;max-width:960px;margin:0 auto}
+.hero h1{font-size:clamp(44px,13vw,96px);font-weight:400;max-width:9ch;position:relative;z-index:1}
+.hero p{max-width:34ch;color:var(--muted);margin:18px 0 0;position:relative;z-index:1}
+.wisp{position:absolute;right:-10px;top:0;width:min(46vw,300px);height:100%;pointer-events:none}
+.wisp path{fill:none;stroke:var(--smoke);stroke-width:3;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420;animation:rise 4s ease-out forwards}
+.wisp path:nth-child(2){animation-delay:.5s;opacity:.6}
+@keyframes rise{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.wisp path{animation:none;stroke-dashoffset:0}}
+main{max-width:960px;margin:0 auto;padding:8px 20px 80px}
+h2{font-size:28px;margin:32px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card img{display:block;width:100%;height:250px;object-fit:contain;background:#0d0d0d}
+.card div{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-size:20px}
+.card small{color:var(--muted)}
+.card .row{flex-direction:row;justify-content:space-between;align-items:center;margin-top:auto;padding:0}
+.price{font-weight:600}
+.add{background:transparent;color:var(--ink);border:1.5px solid var(--ink);border-radius:8px;padding:7px 12px;font-weight:600}
+.add:hover{background:var(--ink);color:var(--bg)}
+.card.wide{grid-column:1/-1}.card .strip{display:flex;flex-direction:row;padding:0;gap:0;flex:none;overflow-x:auto;scroll-snap-type:x mandatory}.card .strip img{flex:0 0 min(100%,460px);height:auto;aspect-ratio:1;object-fit:cover;background:none;scroll-snap-align:start}
+.chips{display:flex;gap:8px;flex-wrap:wrap;padding-top:8px}.chip{background:transparent;color:var(--ink);border:1.5px solid var(--ink);border-radius:999px;padding:7px 14px;font-weight:600}h2[id]{scroll-margin-top:72px}
+.info{margin-top:40px;padding:20px;border-left:4px solid var(--accent);background:var(--surface);max-width:60ch}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(100%,400px);background:var(--surface);border-left:1px solid var(--line);z-index:20;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) 20px calc(18px + env(safe-area-inset-bottom,0px))}
+.drawer.open{transform:none}
+.drawer header{position:static;padding:0 0 12px;background:none}
+.items{flex:1;overflow:auto}
+.item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.qty{display:flex;align-items:center;gap:8px;margin-top:4px}
+.qty button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.total{display:flex;justify-content:space-between;font:400 22px "Gloock",Georgia,serif;padding:14px 0}
+.send{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:14px;font-weight:600;width:100%}
+.send:disabled{opacity:.4;cursor:default}
+.empty{color:var(--muted);padding:24px 0}
+.close{background:none;border:0;color:var(--ink);font-size:15px;text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand" id="brand"></div>
+  <button class="cartbtn" id="open">Carrito (<span id="count">0</span>)</button>
+</header>
+
+<section class="hero">
+  <svg class="wisp" viewBox="0 0 200 400" aria-hidden="true">
+    <path d="M100 400 C60 340 150 300 100 240 C60 190 140 150 100 90 C80 60 110 30 100 0"/>
+    <path d="M110 400 C150 350 70 310 115 250 C150 200 80 160 120 100 C140 70 115 40 125 10"/>
+  </svg>
+  <h1>Encendé el ambiente</h1>
+  <p>Sahumerios y aromas para armar tu momento. Elegí, sumá al carrito y mandanos el pedido por WhatsApp.</p>
+</section>
+
+<main>
+  <div id="sections"></div>
+  <div class="info">
+    <h3>Cómo comprar</h3>
+    <p>Armá tu carrito y tocá “Pedir por WhatsApp”. Te confirmamos stock, envío y forma de pago por mensaje.</p>
+    <p>Local: Outlet Palazzello, primer piso. Instagram: @irida.deco_</p>
+  </div>
+</main>
+
+<aside class="drawer" id="drawer" aria-label="Carrito">
+  <header><h3>Tu carrito</h3><button class="close" id="close">Cerrar</button></header>
+  <div class="items" id="items"></div>
+  <div class="total"><span>Total</span><span id="total">$0</span></div>
+  <button class="send" id="send">Pedir por WhatsApp</button>
+</aside>
+
+<script>
+// ===== EDITÁ ESTO =====
+var BRAND = "Irida Deco";
+var WHATSAPP = "5491176589630"; // código de país + área + número, sin + ni espacios
+var PRODUCTS = [
+  {"id": 1, "name": "Sahumerios Momentos Aromanza", "note": "8 aromas: Paz y Armonía, Meditación, Soltar, Bienestar, Dulzura, Felicidad, Pasión y Limpieza. Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 2500, "imgs": ["img/01-sahumerios-momentos-aromanza-1.jpg"]},
+  {"id": 2, "name": "Sahumerios Tibetanos Aromanza", "note": "Más de 15 aromas (deslizá las fotos). Elegí el que quieras y lo confirmamos por WhatsApp.", "price": 3000, "imgs": ["img/02-sahumerios-tibetanos-aromanza-1.jpg", "img/02-sahumerios-tibetanos-aromanza-2.jpg", "img/02-sahumerios-tibetanos-aromanza-3.jpg"]},
+  {"id": 3, "name": "Sahumerios Palo Santo Buena Onda Aromanza", "note": "12 aromas combinados con palo santo (deslizá las fotos). Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 1700, "imgs": ["img/03-sahumerios-palo-santo-buena-onda-aromanz-1.jpg", "img/03-sahumerios-palo-santo-buena-onda-aromanz-2.jpg"]},
+  {"id": 4, "name": "Sahumerios Tarot Ángeles Sagrada Madre", "note": "5 aromas: Frambuesa, Hojas de violeta, Dulce cacao, Lirios del valle y Frutas tropicales. Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 2600, "imgs": ["img/04-sahumerios-tarot-angeles-sagrada-madre-1.jpg"]},
+  {"id": 5, "name": "Sahumerios Tarot Gemas Sagrada Madre", "note": "4 gemas protectoras: Amatista, Citrino, Ópalo y Turmalina. Elegí la tuya y lo confirmamos por WhatsApp.", "price": 2600, "imgs": ["img/05-sahumerios-tarot-gemas-sagrada-madre-1.jpg"]},
+  {"id": 6, "name": "Sahumerios Tarot Marsella Sagrada Madre", "note": "6 aromas con olíbano: Magnolia, Sándalo, Nag Champa, Pimienta rosa, Vainilla y Almizcle. Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 2600, "imgs": ["img/06-sahumerios-tarot-marsella-sagrada-madre-1.jpg"]},
+  {"id": 7, "name": "Sahumerios Elixir Aromanza", "note": "12 aromas inspirados en perfumes (deslizá las fotos). Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 2500, "imgs": ["img/07-sahumerios-elixir-aromanza-1.jpg", "img/07-sahumerios-elixir-aromanza-2.jpg"]},
+  {"id": 8, "name": "Sahumerios Emociones Aromanza", "note": "8 emociones: Gratitud, Confianza, Calma, Esperanza, Plenitud, Riqueza, Satisfacción y Curiosidad. Elegí la tuya y lo confirmamos por WhatsApp.", "price": 2500, "imgs": ["img/08-sahumerios-emociones-aromanza-1.jpg"]},
+  {"id": 9, "name": "Sahumerios Bombay", "note": "5 aromas en varilla gruesa: Vainilla Magnolia, Sándalo Vainilla, Copal Champa, Lavanda Menta y Manzana Canela. Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 2000, "imgs": ["img/09-sahumerios-bombay-1.jpg"]},
+  {"id": 10, "name": "Sahumerios Indian Heritage", "note": "7 aromas: Ruda, Palo santo, Ámbar y almizcle, Rosa, Sándalo, Nag Champa y Sangre de dragón. Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 2000, "imgs": ["img/10-sahumerios-indian-heritage-1.jpg"]},
+  {"id": 11, "name": "Sahumerios Iluminarte", "note": "6 aromas, 30 varillas por caja: Lima, Durazno, Sandía, Mango, Ananá y Chocolate. Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 2000, "imgs": ["img/11-sahumerios-iluminarte-1.jpg"]},
+  {"id": 12, "name": "Sahumerios Resinas Magistrales Aromanza", "note": "6 resinas consagradas: Resina 7 Poderes, Variedad de resinas, Delicioso benjuí, Mirra africana, Copal andino e Incienso blanco. Elegí la tuya y lo confirmamos por WhatsApp.", "price": 2000, "imgs": ["img/12-sahumerios-resinas-magistrales-aromanza-1.jpg"]},
+  {"id": 13, "name": "Sahumerios Crystal Scents Aromanza", "note": "Kit sahumador con sahumerios energizantes, 4 variedades: Selenita, Ónix, Ojo de tigre y Lava. Elegí la tuya y lo confirmamos por WhatsApp.", "price": 2600, "imgs": ["img/13-sahumerios-crystal-scents-aromanza-1.jpg"]},
+  {"id": 14, "name": "Sahumerios THC Sagrada Madre", "note": "7 variedades con terpenos: White Widow, Watermelon Wonder, Purple Hindu Kush, Blue Dream, Lemon Haze, Tropicana Cookies y Pineapple Pie. Elegí la tuya y lo confirmamos por WhatsApp.", "price": 2600, "imgs": ["img/14-sahumerios-thc-sagrada-madre-1.jpg"]},
+  {"id": 15, "name": "Sahumerios Rama Aromanza", "note": "Sin palo, incluye portasahumerios. 5 aromas: Premium Lemon, Vainillas Encantadas, Naranja Pimienta, Diamante Negro y Energía Limpia. Elegí el tuyo y lo confirmamos por WhatsApp.", "price": 3000, "imgs": ["img/15-sahumerios-rama-aromanza-1.jpg"]},
+  {"id": 16, "section": "sahumadores", "small": true, "name": "Sahumador Flor", "note": "Sahumador con diseño de flor.", "price": 4000, "imgs": ["img/16-sahumador-flor-1.jpg"]},
+  {"id": 17, "section": "hornitos", "small": true, "name": "Hornito de cerámica mariposa", "note": "Hornito de cerámica con diseño de mariposa.", "price": 4000, "imgs": ["img/17-hornito-de-ceramica-mariposa-1.jpg"]},
+  {"id": 18, "section": "hornitos", "small": true, "name": "Hornito de cerámica (negro)", "note": "Hornito de cerámica en color negro.", "price": 4000, "imgs": ["img/18-hornito-de-ceramica-negro-1.jpg"]},
+  {"id": 19, "section": "hornitos", "small": true, "name": "Hornito de cerámica flores", "note": "Hornito de cerámica con flores en relieve.", "price": 4000, "imgs": ["img/19-hornito-de-ceramica-flores-1.jpg"]},
+  {"id": 20, "section": "cascadas", "small": true, "name": "Cascada de humo OM", "note": "Cascada de humo con símbolo OM.", "price": 5000, "imgs": ["img/20-cascada-de-humo-om-1.jpg"]},
+  {"id": 21, "section": "cascadas", "small": true, "name": "Cascada de humo Hindú rostro", "note": "Cascada de humo con rostro hindú.", "price": 5000, "imgs": ["img/21-cascada-de-humo-hindu-rostro-1.jpg"]},
+  {"id": 22, "section": "cascadas", "small": true, "name": "Cascada de humo Hindú mini", "note": "Cascada de humo en tamaño mini.", "price": 4500, "imgs": ["img/22-cascada-de-humo-hindu-mini-1.jpg"]},
+  {"id": 23, "section": "cascadas", "small": true, "name": "Cascada de humo buda bebé", "note": "Cascada de humo con buda bebé.", "price": 4500, "imgs": ["img/23-cascada-de-humo-buda-bebe-1.jpg"]},
+  {"id": 24, "section": "cascadas", "small": true, "name": "Cascada de humo oval", "note": "Cascada de humo con forma oval.", "price": 4500, "imgs": ["img/24-cascada-de-humo-oval-1.jpg"]},
+  {"id": 25, "section": "cascadas", "small": true, "name": "Cascada de humo Hindú", "note": "Cascada de humo con figura hindú.", "price": 7000, "imgs": ["img/25-cascada-de-humo-hindu-1.jpg"]},
+  {"id": 26, "section": "yeso", "small": true, "name": "Máscara de Ganesha", "note": "Deco en yeso.", "price": 16000, "imgs": ["img/26-mascara-de-ganesha-1.jpg"]},
+  {"id": 27, "section": "yeso", "small": true, "name": "Set pensadores", "note": "Deco en yeso.", "price": 7000, "imgs": ["img/27-set-pensadores-1.jpg"]},
+  {"id": 28, "section": "yeso", "small": true, "name": "Ganesha", "note": "Deco en yeso.", "price": 7000, "imgs": ["img/28-ganesha-1.jpg"]},
+  {"id": 29, "section": "yeso", "small": true, "name": "Hindú en reposo", "note": "Deco en yeso.", "price": 10000, "imgs": ["img/29-hindu-en-reposo-1.jpg"]},
+  {"id": 30, "section": "yeso", "small": true, "name": "Elefante de la fortuna", "note": "Deco en yeso.", "price": 4000, "imgs": ["img/30-elefante-de-la-fortuna-1.jpg"]},
+  {"id": 31, "section": "velas", "small": true, "name": "Velas de noche blancas Iluminarte", "note": "Pack de 12 velas de noche blancas, con vaso contenedor.", "price": 2600, "imgs": ["img/31-velas-de-noche-blancas-iluminarte-1.jpg"]},
+  {"id": 32, "section": "velas", "small": true, "name": "Velas finas Iluminarte", "note": "Pack de 12 velas finas, 100% parafina refinada. Colores: rojo, violeta y blanco. Elegí el color y lo confirmamos por WhatsApp.", "price": 3000, "imgs": ["img/32-velas-finas-iluminarte-1.jpg"]},
+  {"id": 33, "section": "velas", "small": true, "name": "Velas de noche de colores Iluminarte", "note": "Pack de 12 velas de noche de colores: naranja, amarillo, rojo, verde y azul. Elegí el color y lo confirmamos por WhatsApp.", "price": 3000, "imgs": ["img/33-velas-de-noche-de-colores-iluminarte-1.jpg"]},
+  {"id": 34, "section": "velas", "small": true, "name": "Velas de noche aromáticas Iluminarte", "note": "Pack de 6 velas aromáticas: Pimpollos de Jazmín, Vainillas Encantadas, Limones de Sorrento, Naranja Pimienta, Uva Dulce, Lavandas del Valle, Energía Limpia y Berry Kiss. Elegí el aroma y lo confirmamos por WhatsApp.", "price": 2800, "imgs": ["img/34-velas-de-noche-aromaticas-iluminarte-1.jpg"]}
+];
+// =======================
+var cart = {};
+var $ = function(id){return document.getElementById(id)};
+var money = function(n){return "$" + n.toLocaleString("es-AR")};
+$("brand").innerHTML = BRAND.split(" ")[0] + ' <span class="deco">' + BRAND.split(" ").slice(1).join(" ") + '</span>';
+document.title = BRAND + " · Tienda";
+
+function card(p){
+  var foot='<div><h3>'+p.name+'</h3><small>'+p.note+'</small><div class="row"><span class="price">'+money(p.price)+'</span><button class="add" data-id="'+p.id+'">Sumar</button></div></div></article>';
+  if(p.imgs) return '<article class="card'+(p.small?'':' wide')+'"><div class="strip">'+p.imgs.map(function(s,i){return '<img src="'+s+'" alt="'+p.name+' '+(i+1)+'">'}).join('')+'</div>'+foot;
+  return '<article class="card"><img src="'+p.img+'" alt="Sahumerios Momentos '+p.name+'">'+foot;
+}
+var SECTIONS=[["sahumerios","Sahumerios"],["sahumadores","Sahumadores"],["hornitos","Hornitos de cerámica"],["cascadas","Cascadas de humo"],["yeso","Deco en yeso"],["velas","Velas"]];
+var shown=SECTIONS.filter(function(s){return PRODUCTS.some(function(p){return (p.section||"sahumerios")===s[0]})});
+$("sections").innerHTML='<div class="chips">'+shown.map(function(s){return '<button class="chip" data-go="'+s[0]+'">'+s[1]+'</button>'}).join("")+'</div>'+shown.map(function(s){
+  var items=PRODUCTS.filter(function(p){return (p.section||"sahumerios")===s[0]});
+  return '<h2 id="'+s[0]+'">'+s[1]+'</h2><div class="grid">'+items.map(card).join("")+'</div>';
+}).join("");
+
+function render(){
+  var ids = Object.keys(cart), n = 0, t = 0, html = "";
+  ids.forEach(function(id){
+    var p = PRODUCTS.filter(function(x){return x.id==id})[0], q = cart[id];
+    n += q; t += q * p.price;
+    html += '<div class="item"><div><strong>'+p.name+'</strong><div class="qty"><button data-d="-1" data-id="'+id+'" aria-label="Quitar uno">−</button><span>'+q+'</span><button data-d="1" data-id="'+id+'" aria-label="Sumar uno">+</button></div></div><span>'+money(q*p.price)+'</span></div>';
+  });
+  $("items").innerHTML = html || '<p class="empty">Todavía no sumaste nada. Elegí un aroma para empezar.</p>';
+  $("count").textContent = n;
+  $("total").textContent = money(t);
+  $("send").disabled = !n;
+}
+function change(id, d){
+  cart[id] = (cart[id] || 0) + d;
+  if (cart[id] <= 0) delete cart[id];
+  render();
+}
+document.addEventListener("click", function(e){
+  var b = e.target.closest("button"); if (!b) return;
+  if (b.classList.contains("add")){ change(b.dataset.id, 1); $("drawer").classList.add("open"); }
+  else if (b.dataset.d){ change(b.dataset.id, +b.dataset.d); }
+  else if (b.dataset.go){ $(b.dataset.go).scrollIntoView({behavior:"smooth"}); }
+});
+$("open").onclick = function(){ $("drawer").classList.add("open"); };
+$("close").onclick = function(){ $("drawer").classList.remove("open"); };
+$("send").onclick = function(){
+  var lines = Object.keys(cart).map(function(id){
+    var p = PRODUCTS.filter(function(x){return x.id==id})[0];
+    return "• " + cart[id] + " x " + p.name + " (" + money(cart[id]*p.price) + ")";
+  });
+  var msg = "Hola! Quiero hacer este pedido:\n" + lines.join("\n") + "\nTotal: " + $("total").textContent + (Object.keys(cart).some(function(id){var q=PRODUCTS.filter(function(x){return x.id==id})[0];return !q.section||q.section==="velas"}) ? "\nLos aromas o colores te los confirmo por acá." : "");
+  window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
+};
+render();
+</script>
+</body>
+</html>
