@@ -29,17 +29,17 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;j
 @media (prefers-reduced-motion:reduce){.wisp path{animation:none;stroke-dashoffset:0}}
 main{max-width:960px;margin:0 auto;padding:8px 20px 80px}
 h2{font-size:28px;margin:32px 0 16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.card img{display:block;width:100%;height:250px;object-fit:contain;background:#0d0d0d}
+.card .strip{display:flex;flex-direction:row;padding:0;gap:0;flex:none;overflow-x:auto;scroll-snap-type:x mandatory}
+.card .strip img, .card > img{flex:0 0 100%;width:100%;height:auto;aspect-ratio:1;object-fit:cover;background:none;scroll-snap-align:start;display:block}
 .card div{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
-.card h3{font-size:20px}
-.card small{color:var(--muted)}
-.card .row{flex-direction:row;justify-content:space-between;align-items:center;margin-top:auto;padding:0}
-.price{font-weight:600}
-.add{background:transparent;color:var(--ink);border:1.5px solid var(--ink);border-radius:8px;padding:7px 12px;font-weight:600}
+.card h3{font-size:18px;margin:0}
+.card small{color:var(--muted);font-size:13px;line-height:1.4}
+.card .row{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:auto;padding-top:10px}
+.price{font-weight:600;font-size:18px;color:var(--ink)}
+.add{background:transparent;color:var(--ink);border:1.5px solid var(--ink);border-radius:8px;padding:9px 10px;font-size:14px;font-weight:600;width:100%;text-align:center;cursor:pointer;transition:background .15s, color .15s}
 .add:hover{background:var(--ink);color:var(--bg)}
-.card.wide{grid-column:1/-1}.card .strip{display:flex;flex-direction:row;padding:0;gap:0;flex:none;overflow-x:auto;scroll-snap-type:x mandatory}.card .strip img{flex:0 0 min(100%,460px);height:auto;aspect-ratio:1;object-fit:cover;background:none;scroll-snap-align:start}
 .chips{display:flex;gap:8px;flex-wrap:wrap;padding-top:8px}.chip{background:transparent;color:var(--ink);border:1.5px solid var(--ink);border-radius:999px;padding:7px 14px;font-weight:600}h2[id]{scroll-margin-top:72px}
 .info-section{margin-top:54px;scroll-margin-top:72px}
 .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:16px}
@@ -220,9 +220,9 @@ $("brand").innerHTML = BRAND.split(" ")[0] + ' <span class="deco">' + BRAND.spli
 document.title = BRAND + " · Tienda";
 
 function card(p){
-  var foot='<div><h3>'+p.name+'</h3><small>'+p.note+'</small><div class="row"><span class="price">'+money(p.price)+'</span><button class="add" data-id="'+p.id+'">Sumar</button></div></div></article>';
-  if(p.imgs) return '<article class="card'+(p.small?'':' wide')+'"><div class="strip">'+p.imgs.map(function(s,i){return '<img src="'+s+'" alt="'+p.name+' '+(i+1)+'">'}).join('')+'</div>'+foot;
-  return '<article class="card"><img src="'+p.img+'" alt="Sahumerios Momentos '+p.name+'">'+foot;
+  var foot='<div><h3>'+p.name+'</h3><small>'+p.note+'</small><div class="row"><span class="price">'+money(p.price)+'</span><button class="add" data-id="'+p.id+'">Agregar al carrito</button></div></div></article>';
+  var list = p.imgs || [p.img];
+  return '<article class="card"><div class="strip">'+list.map(function(s,i){return '<img src="'+s+'" alt="'+p.name+' '+(i+1)+'">'}).join('')+'</div>'+foot;
 }
 var SECTIONS=[["sahumerios","Sahumerios"],["sahumadores","Sahumadores"],["hornitos","Hornitos de cerámica"],["cascadas","Cascadas de humo"],["yeso","Deco en yeso"],["velas","Velas"],["textil","Textil"]];
 var shown=SECTIONS.filter(function(s){return PRODUCTS.some(function(p){return (p.section||"sahumerios")===s[0]})});
